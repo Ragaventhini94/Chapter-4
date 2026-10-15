@@ -45,8 +45,9 @@ const MINI=[
 {title:'🧭 Decision Detective',instruction:'Help the business identify who has decision-making authority. Read each scenario and tap Centralised or Decentralised. Correct choices unlock gems! No timer.'}
 ];
 function stopMini(){miniRunning=false;cancelAnimationFrame(miniRAF);miniItems=[]}
-function openMini(){stopMini();miniKind=miniIndex++;miniCaught=0;miniPosition=50;show('miniGame');$('miniTitle').textContent=MINI[miniKind].title;$('miniInstructions').textContent=MINI[miniKind].instruction;$('miniRound').textContent=`BONUS ${miniKind+1} / 3`;$('miniStatus').textContent='Ready to play?';$('miniAction').textContent='▶ Play bonus game';$('miniAction').onclick=beginMini;$('miniArena').className='mini-arena mini-'+miniKind;$('miniObjects').replaceChildren();$('miniPlayer').style.display=miniKind===0?'block':'none';$('miniPlayer').style.left='50%'}
-function finishMini(){stopMini();$('miniStatus').textContent='🎉 Awesome! Bonus challenge complete!';$('miniAction').textContent='Continue learning ➜';$('miniAction').onclick=()=>{show('game');render()};confetti(65);tone(784,.25,'triangle',.08)}
+function openMini(){stopMini();miniKind=miniIndex++;miniCaught=0;miniPosition=50;show('miniGame');$('miniTitle').textContent=MINI[miniKind].title;$('miniInstructions').textContent=MINI[miniKind].instruction;$('miniRound').textContent=`BONUS ${miniKind+1} / 3`;$('miniStatus').textContent='Ready to play?';$('miniAction').disabled=false;$('miniAction').textContent='▶ Play bonus game';$('miniAction').onclick=beginMini;$('miniSkip').hidden=false;$('miniArena').className='mini-arena mini-'+miniKind;$('miniObjects').replaceChildren();$('miniPlayer').style.display=miniKind===0?'block':'none';$('miniPlayer').style.left='50%'}
+function finishMini(){stopMini();$('miniStatus').textContent='🎉 Awesome! Bonus challenge complete!';$('miniAction').disabled=false;$('miniAction').textContent='Continue learning ➜';$('miniAction').onclick=continueLearning;$('miniSkip').hidden=true;confetti(65);tone(784,.25,'triangle',.08)}
+function continueLearning(){stopMini();show('game');render()}
 function beginMini(){if(miniRunning)return;miniRunning=true;miniCaught=0;$('miniAction').disabled=true;$('miniStatus').textContent='Go go go!';if(miniKind===0){miniLast=0;miniRAF=requestAnimationFrame(starFrame)}else if(miniKind===1)buildTower();else treasureHunt()}
 function moveFox(x){if(!miniRunning||miniKind!==0)return;miniPosition=Math.max(7,Math.min(93,x));$('miniPlayer').style.left=miniPosition+'%'}
 $('miniArena').addEventListener('pointerdown',e=>{if(miniKind===0&&miniRunning){const r=$('miniArena').getBoundingClientRect();moveFox((e.clientX-r.left)/r.width*100)}});
@@ -87,3 +88,5 @@ function treasureHunt(){
  };draw()
 }
 document.addEventListener('keydown',e=>{if(!$('miniGame').classList.contains('active')||!miniRunning||miniKind!==0)return;if(['ArrowLeft','a','A'].includes(e.key)){e.preventDefault();moveFox(miniPosition-8)}if(['ArrowRight','d','D'].includes(e.key)){e.preventDefault();moveFox(miniPosition+8)}});
+
+$('miniSkip').onclick=continueLearning;

@@ -31,3 +31,6 @@ After questions 4, 8, and 12, players enter three interactive mini-games: Star C
 2. Build the Reporting Chain: select CEO, Department Manager, Supervisor, Employee in reporting order.
 3. Decision Detective: four scenarios distinguishing centralised and decentralised authority.
 All three are untimed and do not change the 15-question learning score.
+
+## October 2026 bug fix
+Fixed disabled Continue Learning button after mini-game completion. Added Skip Mini-Game to continue directly to the next question.
